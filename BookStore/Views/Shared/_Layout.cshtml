@@ -4,8 +4,28 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+
+    @*
+        Aqui estão nossos Bundles
+        Vai funcionar igual às tags abaixo
+        Quando tenho apenas uma linha de código 
+        (sem abrir chaves) 
+        não preciso de ponto e vírgula
+    *@
+
+    @Styles.Render("~/css/site")
+    @Scripts.Render("~/js/site")
+
+    @*Tags Html para estilos e scripts*@
+    @*<link href="~/Content/bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script src="~/Scripts/bootstrap.js"></script>*@
+
+
+    @*
+        @Styles.Render("~/Content/css")
+        @Scripts.Render("~/bundles/modernizr")
+    *@
 
 </head>
 <body>
@@ -42,8 +62,12 @@
 
 
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @*
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+    *@
+
+
     @RenderSection("scripts", required: false)
 </body>
 </html>

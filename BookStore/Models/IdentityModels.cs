@@ -35,5 +35,7 @@ namespace BookStore.Models
         public System.Data.Entity.DbSet<BookStore.Models.Livro> Livroes { get; set; }
 
         public System.Data.Entity.DbSet<BookStore.Models.Cliente> Clientes { get; set; }
+
+        public System.Data.Entity.DbSet<BookStore.Models.CarrinhoItem> CarrinhoItems { get; set; }
     }
 }

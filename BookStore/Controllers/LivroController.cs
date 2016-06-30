@@ -10,79 +10,82 @@ using BookStore.Models;
 
 namespace BookStore.Controllers
 {
+    //Classe controller. SEMPRE tem que herdar de System.Web.Mvc.Controller
     public class LivroController : Controller
     {
+        //Minha abstração do banco de dados
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Livro
+        // GET: Retorna a view /Livro/Index
         public ActionResult Index()
         {
-            var livroes = db.Livroes.Include(l => l.Categoria);
-            return View(livroes.ToList());
+            //Passa uma lista de livros para a View
+            //Dessa forma, ao renderizar essa View, já vai aparecer uma listagem de livros
+            List<Livro> livros = db.Livroes.Include(l => l.Categoria).ToList();
+            return View(livros);
         }
 
-        // GET: Livro/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //Busco o livro que tem o id igual ao parâmetro passado
             Livro livro = db.Livroes.Find(id);
-            if (livro == null)
-            {
-                return HttpNotFound();
-            }
+
+            //Retorno a view com esse livro
             return View(livro);
         }
 
-        // GET: Livro/Create
+        //Retorna a página de criação de livro
         public ActionResult Create()
         {
+            //Essa ViewBag, serve para passar a lista de categorias para a View
             ViewBag.CategoriaLivroId = new SelectList(db.CategoriaLivroes, "Id", "Nome");
+
             return View();
         }
 
-        // POST: Livro/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CategoriaLivroId,Autor,Titulo,Sinopse,DataLancamento,Preco")] Livro livro)
+        //Por definição, uma página chamada Create vai postar para uma Url Create
+        //Então, o método acima (Create()) sem parâmetros apenas retorna a View
+        //Enquanto esse método aqui (Create(Livro livro)) que recebe um livro
+        //Será o retorno da View Create para o controller
+        //Ou seja, a página de Create vai postar de volta para Create
+        public ActionResult Create(Livro livro)
         {
+            //ModelState.IsValid vai validar se o model passado por parâmetro 
+            //cumpre com todas as definições das Annotations, por exemplo [StringLength(20)]
             if (ModelState.IsValid)
             {
+                //Se o model é válido, adiciona no banco
                 db.Livroes.Add(livro);
+                //Salva
                 db.SaveChanges();
+                //E retorna para a View de Index
                 return RedirectToAction("Index");
             }
-
-            ViewBag.CategoriaLivroId = new SelectList(db.CategoriaLivroes, "Id", "Nome", livro.CategoriaLivroId);
-            return View(livro);
+            else
+            {
+                //Se o model não for válido, vai voltar para a View de Create, para que o usuário corrija
+                ViewBag.CategoriaLivroId = new SelectList(db.CategoriaLivroes, "Id", "Nome", livro.CategoriaLivroId);
+                return View(livro);
+            }
         }
 
-        // GET: Livro/Edit/5
-        public ActionResult Edit(int? id)
+        //Get, recebe o Id do item que será editado
+        public ActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //Busco o livro que tem o Id passado por parâmetro
             Livro livro = db.Livroes.Find(id);
-            if (livro == null)
-            {
-                return HttpNotFound();
-            }
+
+            //Retorno uma View com o livro e as categorias
             ViewBag.CategoriaLivroId = new SelectList(db.CategoriaLivroes, "Id", "Nome", livro.CategoriaLivroId);
             return View(livro);
         }
 
-        // POST: Livro/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,CategoriaLivroId,Autor,Titulo,Sinopse,DataLancamento,Preco")] Livro livro)
+        //Assim como o Create, vai receber o livro que foi editado na View
+        public ActionResult Edit( Livro livro)
         {
             if (ModelState.IsValid)
             {
@@ -90,28 +93,23 @@ namespace BookStore.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.CategoriaLivroId = new SelectList(db.CategoriaLivroes, "Id", "Nome", livro.CategoriaLivroId);
-            return View(livro);
+            else
+            {
+                ViewBag.CategoriaLivroId = new SelectList(db.CategoriaLivroes, "Id", "Nome", livro.CategoriaLivroId);
+                return View(livro);
+            }
         }
 
-        // GET: Livro/Delete/5
-        public ActionResult Delete(int? id)
+        //Retorna a página de confirmação de deleção
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             Livro livro = db.Livroes.Find(id);
-            if (livro == null)
-            {
-                return HttpNotFound();
-            }
             return View(livro);
         }
 
-        // POST: Livro/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        //Confirma que o livro vai ser deletado
         public ActionResult DeleteConfirmed(int id)
         {
             Livro livro = db.Livroes.Find(id);

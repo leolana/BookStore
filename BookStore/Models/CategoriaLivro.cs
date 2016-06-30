@@ -12,7 +12,6 @@ namespace BookStore.Models
         [Key]
         public int Id { get; set; }
 
-        [DisplayName("Categoria")]
         public string Nome { get; set; }
 
         public virtual ICollection<Livro> Livros { get; set; }

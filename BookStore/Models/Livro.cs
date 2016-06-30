@@ -16,7 +16,6 @@ namespace BookStore.Models
         [ForeignKey("Categoria")] //FK para categoria
         [DisplayName("Categoria do Livro")]
         public int CategoriaLivroId { get; set; }
-
         public CategoriaLivro Categoria { get; set; }
 
         [Required]
@@ -24,9 +23,12 @@ namespace BookStore.Models
         public string Autor { get; set; }
 
         [Required]
+        [StringLength(20)]
         public string Titulo { get; set; }
 
         [Required]
+        [DataType(DataType.MultilineText)]
+        [StringLength(1024)]
         public string Sinopse { get; set; }
 
         [DataType(DataType.Date)]
@@ -37,5 +39,7 @@ namespace BookStore.Models
 
         [DisplayName("Preço")]
         public decimal Preco { get; set; }
+
+        public virtual ICollection<CarrinhoItem> CarrinhoItens { get; set; }
     }
 }

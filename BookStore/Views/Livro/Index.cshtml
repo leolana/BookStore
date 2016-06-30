@@ -11,6 +11,7 @@
 </p>
 <table class="table">
     <tr>
+        <th></th>
         <th>
             @Html.DisplayNameFor(model => model.Categoria.Nome)
         </th>
@@ -35,6 +36,12 @@
 @foreach (var item in Model) {
     <tr>
         <td>
+            @*Vou postar o Id do livro para o controller de carrinho na ação AdicionaLivro*@
+            <form method="post" action="/Carrinho/AdicionaLivro">
+                <button type="submit" name="Id" value="@(item.Id)">Adiciona ao carrinho</button>
+            </form>
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Categoria.Nome)
         </td>
         <td>
@@ -54,7 +61,6 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>

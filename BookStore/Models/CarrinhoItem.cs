@@ -8,20 +8,21 @@ using System.Web;
 
 namespace BookStore.Models
 {
-    public class Compra
+    public class CarrinhoItem
     {
         [Key]
         public int Id { get; set; }
+
+        [DisplayName("Livro")]
+        [ForeignKey("Livro")]
+        public int LivroId { get; set; }
+        public Livro Livro { get; set; }
 
         [DisplayName("Cliente")]
         [ForeignKey("Cliente")]
         public int ClienteId { get; set; }
         public Cliente Cliente { get; set; }
 
-        [DisplayName("Valor Total")]
-        public decimal ValorTotal { get; set; }
-
-        [DisplayName("Valor do Frete")]
-        public decimal ValorFrete { get; set; }
+        public int Quantidade { get; set; }
     }
 }

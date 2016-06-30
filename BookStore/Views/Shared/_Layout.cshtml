@@ -5,14 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
 
-    @*
-        Aqui estão nossos Bundles
-        Vai funcionar igual às tags abaixo
-        Quando tenho apenas uma linha de código 
-        (sem abrir chaves) 
-        não preciso de ponto e vírgula
-    *@
-
+    @*Aqui estão nossos Bundles vai funcionar igual às tags html abaixo
+      Quando tenho apenas uma linha de código (sem abrir chaves) não preciso de ponto e vírgula*@
     @Styles.Render("~/css/site")
     @Scripts.Render("~/js/site")
 
@@ -20,12 +14,6 @@
     @*<link href="~/Content/bootstrap.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-1.10.2.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>*@
-
-
-    @*
-        @Styles.Render("~/Content/css")
-        @Scripts.Render("~/bundles/modernizr")
-    *@
 
 </head>
 <body>
@@ -46,6 +34,7 @@
                     <li>@Html.ActionLink("Cliente", "Index", "Cliente")</li>
                     <li>@Html.ActionLink("Categoria", "Index", "CategoriaLivro")</li>
                     <li>@Html.ActionLink("Livro", "Index", "Livro")</li>
+                    <li>@Html.ActionLink("Carrinho", "Index", "Carrinho")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>
@@ -59,14 +48,6 @@
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
-
-
-
-    @*
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-    *@
-
 
     @RenderSection("scripts", required: false)
 </body>

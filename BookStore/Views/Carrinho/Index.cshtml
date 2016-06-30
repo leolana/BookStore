@@ -1,0 +1,42 @@
+﻿@model IEnumerable<BookStore.Models.CarrinhoItem>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Livro.Titulo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Livro.Autor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Livro.Preco)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantidade)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Livro.Titulo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Livro.Autor)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Livro.Preco)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Quantidade)
+        </td>
+    </tr>
+}
+
+</table>

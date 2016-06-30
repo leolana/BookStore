@@ -10,103 +10,104 @@ using BookStore.Models;
 
 namespace BookStore.Controllers
 {
+    //Classe controller. SEMPRE tem que herdar de System.Web.Mvc.Controller
     public class CategoriaLivroController : Controller
     {
+        //Minha abstração do banco de dados
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: CategoriaLivro
+        // GET: retorna a view /CategoriaLivro/Index
         public ActionResult Index()
         {
-            return View(db.CategoriaLivroes.ToList());
+            //Passa uma lista de categorias para a View
+            //Dessa forma, ao renderizar essa View, já vai aparecer uma listagem de categorias
+            List<CategoriaLivro> categorias = db.CategoriaLivroes.ToList();
+            return View(categorias);
         }
 
-        // GET: CategoriaLivro/Details/5
-        public ActionResult Details(int? id)
+        
+        public ActionResult Details(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //Busco a categoria que tem o id igual ao parâmetro passado
             CategoriaLivro categoriaLivro = db.CategoriaLivroes.Find(id);
-            if (categoriaLivro == null)
-            {
-                return HttpNotFound();
-            }
+
+            //Retorno uma View com essa categoria
             return View(categoriaLivro);
         }
 
-        // GET: CategoriaLivro/Create
+        //Retorna a página de criação de categoria
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: CategoriaLivro/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPost] //Post
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Nome")] CategoriaLivro categoriaLivro)
+        //Por definição, uma página chamada Create vai postar para uma Url Create
+        //Então, o método acima (Create()) sem parâmetros apenas retorna a View
+        //Enquanto esse método aqui (Create(CategoriaLivro categoriaLivro)) que recebe uma categoriaLivro
+        //Será o retorno da View Create para o controller
+        //Ou seja, a página de Create vai postar de volta para Create
+        public ActionResult Create(CategoriaLivro categoriaLivro)
         {
+            //ModelState.IsValid vai validar se o model passado por parâmetro 
+            //cumpre com todas as definições das Annotations, por exemplo [StringLength(20)]
             if (ModelState.IsValid)
             {
+                //Se o model é válido, adiciona no banco
                 db.CategoriaLivroes.Add(categoriaLivro);
+                //Salva
                 db.SaveChanges();
+                //E retorna para a View de Index
                 return RedirectToAction("Index");
             }
-
-            return View(categoriaLivro);
+            else
+            {
+                //Se o model não for válido, vai voltar para a View de Create, para que o usuário corrija
+                return View(categoriaLivro);
+            }
         }
 
-        // GET: CategoriaLivro/Edit/5
-        public ActionResult Edit(int? id)
+        //Get, recebe o Id do item que será editado
+        public ActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //Busco a categoria que tem o Id passado por parâmetro
             CategoriaLivro categoriaLivro = db.CategoriaLivroes.Find(id);
-            if (categoriaLivro == null)
-            {
-                return HttpNotFound();
-            }
+            
+            //E retorno uma View com ela
             return View(categoriaLivro);
         }
 
-        // POST: CategoriaLivro/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Nome")] CategoriaLivro categoriaLivro)
+        //Assim como o Create, vai receber a categoria que foi editada na View do método acima
+        public ActionResult Edit(CategoriaLivro categoriaLivro)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(categoriaLivro).State = EntityState.Modified;
                 db.SaveChanges();
+
+                //Se o model é válido, retorno para a View de Index
                 return RedirectToAction("Index");
             }
-            return View(categoriaLivro);
+            else
+            {
+                //Caso o model seja inválido, vai retornar para a View de Edit
+                return View(categoriaLivro);
+            }
         }
 
-        // GET: CategoriaLivro/Delete/5
-        public ActionResult Delete(int? id)
+        //Retorna a página de confirmação de deleção
+        public ActionResult Delete(int id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
             CategoriaLivro categoriaLivro = db.CategoriaLivroes.Find(id);
-            if (categoriaLivro == null)
-            {
-                return HttpNotFound();
-            }
             return View(categoriaLivro);
         }
 
-        // POST: CategoriaLivro/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        //Confirma que a Categoria cujo Id seja igual o passado por parâmetro vai ser deletada
         public ActionResult DeleteConfirmed(int id)
         {
             CategoriaLivro categoriaLivro = db.CategoriaLivroes.Find(id);

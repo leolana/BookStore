@@ -14,6 +14,7 @@ namespace BookStore.Controllers
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        // GET: Livro
         public ActionResult Index()
         {
             var livroes = db.Livroes.Include(l => l.Categoria);
@@ -35,13 +36,19 @@ namespace BookStore.Controllers
             return View(livro);
         }
 
+        // GET: Livro/Create
         public ActionResult Create()
         {
+            ViewBag.CategoriaLivroId = new SelectList(db.CategoriaLivroes, "Id", "Nome");
             return View();
         }
 
+        // POST: Livro/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public ActionResult Create(Livro livro)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Id,CategoriaLivroId,Autor,Titulo,Sinopse,DataLancamento,Preco")] Livro livro)
         {
             if (ModelState.IsValid)
             {
@@ -50,32 +57,44 @@ namespace BookStore.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.CategoriaLivroId = new SelectList(db.CategoriaLivroes, "Id", "Nome", livro.CategoriaLivroId);
             return View(livro);
         }
 
-
-        public ActionResult Edit(int id)
+        // GET: Livro/Edit/5
+        public ActionResult Edit(int? id)
         {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
             Livro livro = db.Livroes.Find(id);
+            if (livro == null)
+            {
+                return HttpNotFound();
+            }
+            ViewBag.CategoriaLivroId = new SelectList(db.CategoriaLivroes, "Id", "Nome", livro.CategoriaLivroId);
             return View(livro);
         }
 
-        [HttpPut]
-        public ActionResult Edit(Livro livro)
+        // POST: Livro/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,CategoriaLivroId,Autor,Titulo,Sinopse,DataLancamento,Preco")] Livro livro)
         {
             if (ModelState.IsValid)
             {
-                Livro livroNovo = db.Livroes.Find(livro.Id);
-                livroNovo.Titulo = livro.Titulo;
-                livroNovo.Autor = livro.Autor;
-
                 db.Entry(livro).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            ViewBag.CategoriaLivroId = new SelectList(db.CategoriaLivroes, "Id", "Nome", livro.CategoriaLivroId);
             return View(livro);
         }
 
+        // GET: Livro/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -90,7 +109,9 @@ namespace BookStore.Controllers
             return View(livro);
         }
 
-        [HttpDelete]
+        // POST: Livro/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             Livro livro = db.Livroes.Find(id);

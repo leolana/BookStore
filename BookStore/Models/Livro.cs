@@ -35,6 +35,7 @@ namespace BookStore.Models
         [Required]
         [DisplayName("Data de lançamento")]
         [DisplayFormat(DataFormatString="{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)] //Formatação para exibir apenas Data
+        [UIHint("Datepicker")]
         public DateTime DataLancamento { get; set; }
 
         [DisplayName("Preço")]

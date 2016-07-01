@@ -22,13 +22,15 @@ namespace BookStore.Controllers
             //Passa uma lista de livros para a View
             //Dessa forma, ao renderizar essa View, já vai aparecer uma listagem de livros
             List<Livro> livros = db.Livroes.Include(l => l.Categoria).ToList();
+
+            ViewBag.Title = "Book Store 2";
             return View(livros);
         }
 
         public ActionResult Details(int id)
         {
             //Busco o livro que tem o id igual ao parâmetro passado
-            Livro livro = db.Livroes.Find(id);
+            Livro livro = db.Livroes.Where(l => l.Id == id).Include(l => l.Categoria).Single();
 
             //Retorno a view com esse livro
             return View(livro);
@@ -116,6 +118,15 @@ namespace BookStore.Controllers
             db.Livroes.Remove(livro);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult BuscarAutor(string termo)
+        {
+            var autores = db.Livroes.Where(l => l.Autor.Contains(termo))
+                                    .Select(l => l.Autor)
+                                    .ToList();
+
+            return PartialView("_BuscarAutorPartialView", autores);
         }
 
         protected override void Dispose(bool disposing)

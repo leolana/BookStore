@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using BookStore.Models;
 
 namespace BookStore.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
+        public ActionResult Index(int page = 0)
         {
-            return View();
+            var livros = db.Livroes.Take(6).ToList();
+            return View(livros);
         }
 
         public ActionResult About()
@@ -25,6 +28,15 @@ namespace BookStore.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

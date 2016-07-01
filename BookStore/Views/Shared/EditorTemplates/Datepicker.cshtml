@@ -1,0 +1,19 @@
+﻿@model DateTime?
+
+@Html.TextBox("", Model.HasValue ? Model.Value.ToString("d") : String.Empty, htmlAttributes: new { @class="form-control"})
+
+@section Styles {
+    <link href="~/Content/bootstrap-datepicker.css" rel="stylesheet"/>
+}
+
+@section Scripts {
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            // target only the input in this editor template
+            $('#@Html.IdForModel()').datetimepicker({
+                pickTime: false
+            });
+        });
+    </script>
+}

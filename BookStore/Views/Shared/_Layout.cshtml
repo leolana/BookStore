@@ -6,14 +6,14 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
 
     @*Aqui estão nossos Bundles vai funcionar igual às tags html abaixo
-      Quando tenho apenas uma linha de código (sem abrir chaves) não preciso de ponto e vírgula*@
+        Quando tenho apenas uma linha de código (sem abrir chaves) não preciso de ponto e vírgula*@
     @Styles.Render("~/css/site")
     @Scripts.Render("~/js/site")
 
     @*Tags Html para estilos e scripts*@
     @*<link href="~/Content/bootstrap.css" rel="stylesheet" />
-    <script src="~/Scripts/jquery-1.10.2.js"></script>
-    <script src="~/Scripts/bootstrap.js"></script>*@
+        <script src="~/Scripts/jquery-1.10.2.js"></script>
+        <script src="~/Scripts/bootstrap.js"></script>*@
 
 </head>
 <body>
@@ -44,9 +44,7 @@
         @RenderBody()
         <hr />
 
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-        </footer>
+        @Html.Partial("_PartialFooter")
     </div>
 
     @RenderSection("scripts", required: false)

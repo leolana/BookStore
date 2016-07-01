@@ -14,8 +14,7 @@ namespace BookStore
         {            AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-            BookStore.App_Start /*<<-- Poderia ser um using*/
-                .BundleConfig
+            BundleConfig
                 .RegisterBundles(BundleTable.Bundles);
         }
     }

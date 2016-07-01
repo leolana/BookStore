@@ -27,7 +27,7 @@
         {
             <input type="text" class="form-control col-md-6" name="termo" />
             <button type="submit" class="btn btn-default">Buscar</button>
-            <img id="ajax-loader" src="@Url.Content("~/Images/ajax-loader.svg")" style="display: none; width: 30px; height: 30px;" />
+            <img id="ajax-loader" src="@Url.Content("~/Public/images/ajax-loader.svg")" style="display: none; width: 30px; height: 30px;" />
         }
         <div id="searchresults"></div>
     </div>
@@ -38,7 +38,7 @@
     {
         <li class="col-lg-2 col-md-2 col-sm-2 col-xs-4 container text-center">
             <a href="@Url.Action("Details", "Livro", new {id = livro.Id})">
-                <img alt="@livro.Titulo" src="~/Images/icon.jpg"/>
+                <img alt="@livro.Titulo" src="~/Public/images/icon.jpg"/>
                 <h4>@livro.Titulo</h4>
             </a>
         </li>
@@ -46,11 +46,10 @@
 </ul>
 
 @section Scripts {
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Public/js/jquery.unobtrusive-ajax.min.js"></script>
     <script>
         function searchFailed() {
             $("#searchresults").html("Houve um problema em seu ajax.");
         }
-    }
     </script>
 }

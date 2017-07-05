@@ -7,14 +7,17 @@
 
     @*Aqui estão nossos Bundles vai funcionar igual às tags html abaixo
         Quando tenho apenas uma linha de código (sem abrir chaves) não preciso de ponto e vírgula*@
-    @Styles.Render("~/css/site")
-    @Scripts.Render("~/js/site")
+    @*@Styles.Render("~/css/site")
+        @Scripts.Render("~/js/site")*@
 
     @*Tags Html para estilos e scripts*@
-    @*<link href="~/Content/bootstrap.css" rel="stylesheet" />
-        <script src="~/Scripts/jquery-1.10.2.js"></script>
-        <script src="~/Scripts/bootstrap.js"></script>*@
+    <link href="~/Public/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/Public/css/app/app.css" rel="stylesheet" />
 
+    <script src="~/Public/js/jquery-1.10.2.js"></script>
+    <script src="~/Public/js/bootstrap.js"></script>
+    <script src="~/Public/js/jquery.validate.js"></script>
+    <script src="~/Public/js/respond.js"></script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">

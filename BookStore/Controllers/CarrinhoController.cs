@@ -43,6 +43,58 @@ namespace BookStore.Controllers
             return View(itens);
         }
 
+        [HttpPost]
+        //Essa Action será chamada da View de Livros (/Livro/Index)
+        //Ela vai servir para adicionar o livro que tem o id passado por parâmetro ao carrinho do cliente
+        public ActionResult AdicionaLivro(int id)
+        {
+            //Vou buscar o cliente (o primeiro nesse caso)
+            Cliente cliente = db.Clientes.First();
+
+            //Vou procurar se já existe um livro com id igual ao parâmetro no carrinho
+            if (cliente.CarrinhoItens.Any(i => i.LivroId == id))
+            {
+                //Se eu encontrar o livro dentro do carrinho, vou incrementar a quantidade dele
+                cliente.CarrinhoItens.First(i => i.LivroId == id).Quantidade++;
+
+                /*! O if acima faz o mesmo que o seguinte código:
+
+                    List<CarrinhoItem> itens = cliente.CarrinhoItens.ToList();
+                    for(int i = 0; i < itens.Count(); i++)
+                    {
+                        CarrinhoItem item = itens[i];
+
+                        if(item.LivroId == id)
+                        {
+                            item.Quantidade = item.Quantidade + 1;
+                        }
+                    }
+
+                 */
+            }
+            else //Se não encontrei o livro dentro do carrinho
+            {
+                //Vou buscar o livro que tem o id passado por parâmetro
+                Livro livro = db.Livroes.Find(id);
+
+                //Vou criar um item novo
+                CarrinhoItem item = new CarrinhoItem();
+                //Com quantidade = 1
+                item.Quantidade = 1;
+
+                //Vou atribuir o livro encontrado ao item
+                item.Livro = livro;
+
+                //E vou adicionar o item ao carrinho do cliente
+                cliente.CarrinhoItens.Add(item);
+            }
+
+            //Independente se o item já existia no carrinho, ou é um item novo, vou salvar
+            db.SaveChanges();
+
+            //E retornar para a View de Index do Carrinho
+            return RedirectToAction("Index");
+        }
 
     }
 }
